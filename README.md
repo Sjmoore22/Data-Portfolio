@@ -29,7 +29,7 @@ This repository showcases data analytics, visualization, and machine learning pr
 - 🔍 **Methods:** Feature engineering, regression model, dashboard insights.
 - 📈 **Results:** Identified key player attributes affecting performance.
 
-📌 **[Project Folder](projects/golf-performance)**
+📌 **[Project Folder](https://github.com/users/Sjmoore22/projects/1/views/1?pane=issue&itemId=98013176)**
 
 ---
 
