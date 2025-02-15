@@ -1,0 +1,56 @@
+-- Golf Performance Dashboard - Power BI DAX Calculations
+
+-- 1. Driving Accuracy Percentage
+DrivingAccuracy% = 
+DIVIDE(
+    SUM(GolfData[Fairways_Hit]),
+    SUM(GolfData[Fairways_Attempted]),
+    0
+)
+
+-- 2. Greens in Regulation (GIR) Percentage
+GIR% = 
+DIVIDE(
+    SUM(GolfData[Greens_Hit]),
+    SUM(GolfData[Greens_Attempted]),
+    0
+)
+
+-- 3. Average Putts Per Round
+AvgPuttsPerRound = 
+AVERAGEX(
+    GolfData,
+    GolfData[Putts_Per_Round]
+)
+
+-- 4. Player Rank Based on Final Score
+PlayerRank = 
+RANKX(
+    ALL(GolfData[Player_Name]),
+    SUM(GolfData[Final_Score]),
+    , ASC, DENSE
+)
+
+-- 5. Tournament Scoring Average
+TournamentScoringAvg = 
+AVERAGEX(
+    FILTER(GolfData, GolfData[Event] = SELECTEDVALUE(GolfData[Event])),
+    GolfData[Final_Score]
+)
+
+-- 6. Impact of Course Difficulty on Scores
+CourseDifficultyImpact = 
+VAR AvgScore = AVERAGEX(ALL(GolfData), GolfData[Final_Score])
+VAR CourseAvg = CALCULATE(AVERAGEX(GolfData, GolfData[Final_Score]), ALLEXCEPT(GolfData, GolfData[Course]))
+RETURN 
+    CourseAvg - AvgScore
+
+-- 7. Top 5 Players by Strokes Gained
+Top5StrokesGained = 
+TOPN(5, 
+    SUMMARIZE(
+        GolfData, GolfData[Player_Name],
+        "StrokesGained", SUM(GolfData[Strokes_Gained])
+    ),
+    [StrokesGained], DESC
+)
