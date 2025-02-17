@@ -1,0 +1,50 @@
+Query to Validate Postcode Against GolfLinkNo
+
+Introduction
+
+This query joins the PersonalDetails table with the Address table using both PostalAddressId and MailingAddressId. It then checks if the Postcode is linked correctly for validation.
+
+SQL Query
+
+SELECT TOP 20
+    pd.PersonalDetailsId,
+    pd.UserId,
+    pd.FirstName,
+    pd.LastName,
+    pd.GolfLinkNo,
+    pd.Email,
+    pd.PostalAddressId,
+    a1.AddressId AS PostalAddressMatch,
+    a1.Postcode AS PostalPostcode,
+    pd.MailingAddressId,
+    a2.AddressId AS MailingAddressMatch,
+    a2.Postcode AS MailingPostcode
+FROM dbo.PersonalDetails pd
+LEFT JOIN dbo.Address a1
+    ON pd.PostalAddressId = a1.AddressId
+LEFT JOIN dbo.Address a2
+    ON pd.MailingAddressId = a2.AddressId;
+
+How This Query Works:
+  Joins PersonalDetails with Address using:
+    PostalAddressId → AddressId
+    MailingAddressId → AddressId
+  
+Retrieves:
+    GolfLinkNo
+    PostalAddressId and its matching Postcode
+    MailingAddressId and its matching Postcode
+
+Uses ORDER BY NEWID() to randomize results for a diverse sample.
+
+Validation Results
+    MailingAddressId has 20 matches with AddressId in the Address table.  
+    PostalAddressId has only 7 matches with AddressId.
+
+Conclusion
+    The validation confirms that MailingAddressId is the stronger identifier for linking PersonalDetails to Address. PostalAddressId has limited matches and should not be the primary key for mapping address information.
+
+Next Steps
+    Ensure MailingAddressId is used as the preferred key in database queries.
+    Investigate missing PostalAddressId records for potential data integrity issues.
+    Review postcode consistency for improved data accuracy.
