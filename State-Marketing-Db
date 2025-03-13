@@ -1,0 +1,30 @@
+--Query Database to find the total number of opted in to marketing users in each state-- 
+
+SELECT 
+    CASE 
+        WHEN LEFT([GolfLinkNo], 1) = '2' THEN 'NSW'
+        WHEN LEFT([GolfLinkNo], 1) = '3' THEN 'VIC'
+        WHEN LEFT([GolfLinkNo], 1) = '4' THEN 'QLD'
+        WHEN LEFT([GolfLinkNo], 1) = '5' THEN 'SA'
+        WHEN LEFT([GolfLinkNo], 1) = '6' THEN 'WA'
+        WHEN LEFT([GolfLinkNo], 1) = '7' THEN 'TAS'
+        WHEN LEFT([GolfLinkNo], 3) = '008' THEN 'NT'
+        ELSE 'UNKNOWN'
+    END AS State,
+    COUNT(DISTINCT [Email]) AS TotalCount
+FROM [dbo].[PersonalDetails]
+WHERE [ReceiveGolfEquipmentOffers] = 1
+    AND [GolfLinkNo] IS NOT NULL
+    AND [Email] IS NOT NULL
+GROUP BY 
+    CASE 
+        WHEN LEFT([GolfLinkNo], 1) = '2' THEN 'NSW'
+        WHEN LEFT([GolfLinkNo], 1) = '3' THEN 'VIC'
+        WHEN LEFT([GolfLinkNo], 1) = '4' THEN 'QLD'
+        WHEN LEFT([GolfLinkNo], 1) = '5' THEN 'SA'
+        WHEN LEFT([GolfLinkNo], 1) = '6' THEN 'WA'
+        WHEN LEFT([GolfLinkNo], 1) = '7' THEN 'TAS'
+        WHEN LEFT([GolfLinkNo], 3) = '008' THEN 'NT'
+        ELSE 'UNKNOWN'
+    END
+ORDER BY State;
