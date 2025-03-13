@@ -1,4 +1,6 @@
 --Query Database to find the total number of opted in to marketing users in each state-- 
+--Dependent on if a user has a GL Number--
+--Can link to the address table and find postcode for a more accuate evaluation--
 
 SELECT 
     CASE 
